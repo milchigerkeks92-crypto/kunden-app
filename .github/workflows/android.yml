@@ -1,0 +1,14 @@
+            - name: Buildozer action
+  # You may pin to the exact commit or the version.
+  # uses: ArtemSBulgakov/buildozer-action@3808a27e5d64e3921ed1735dacc214aeaec38080
+  uses: ArtemSBulgakov/buildozer-action@v1.2.0
+  with:
+    # Command to start Buildozer. Set to `buildozer ios debug` for iOS
+    command: # default is buildozer android debug
+    # Path to cloned repository. Set if you specified path for `actions/checkout` action.
+    repository_root: # default is .
+    # Working directory where buildozer.spec is located. Set to `src` if buildozer.spec is in `src` directory
+    workdir: # default is .
+    # Version of Buildozer to install. By default installs latest release
+    buildozer_version: # default is stable
+          
