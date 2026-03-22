@@ -22,7 +22,7 @@ jobs:
       - name: Install Pip Dependencies
         run: |
           pip install --upgrade pip
-          pip install Cython==0.29.33 buildozer
+          pip install "Cython<3.0" buildozer
 
       - name: Build APK
         run: |
