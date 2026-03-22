@@ -1,0 +1,10 @@
+            - name: Buildozer-Kivy-Apk-Creator
+  # You may pin to the exact commit or the version.
+  # uses: wildspider57389928/Buildozer-Kivy-APK_Creator@08e04fd25fa70c8468f00c99cb3a52feda0ef928
+  uses: wildspider57389928/Buildozer-Kivy-APK_Creator@4.0.0
+  with:
+    # Building Directory
+    project-dir: # default is .
+    # Buildozer command
+    command: # default is buildozer android debug
+          
