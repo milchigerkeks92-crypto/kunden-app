@@ -1,36 +1,26 @@
-name: Android Build
+name: AndroidBuild
 on:
   push:
-    branches: [ "main" ]
-
+    branches:
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
-      - name: Install dependencies
+      - name: Install
         run: |
           sudo apt update
           sudo apt install -y git zip unzip autoconf autogen libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev openjdk-17-jdk
-          pip install --upgrade Cython==0.29.33 buildozer
-
-      - name: Build with Buildozer
+          pip install --user --upgrade Cython==0.29.33 buildozer
+      - name: RunBuildozer
         run: |
-          if [ ! -f buildozer.spec ]; then
-            buildozer init
-            sed -i 's/requirements = python3,kivy/requirements = python3,kivy,libffi/' buildozer.spec
-            sed -i 's/source.include_exts = py,png,jpg,kv,atlas/source.include_exts = py,png,jpg,kv,atlas,json/' buildozer.spec
-          fi
+          buildozer init
+          sed -i 's/requirements = python3,kivy/requirements = python3,kivy,libffi/' buildozer.spec
+          sed -i 's/source.include_exts = py,png,jpg,kv,atlas/source.include_exts = py,png,jpg,kv,atlas,json/' buildozer.spec
           buildozer -v android debug
-
-      - name: Upload APK
+      - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: KundenManager-APK
+          name: App-Paket
           path: bin/*.apk
