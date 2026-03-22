@@ -1,10 +1,36 @@
-            - name: Buildozer-Kivy-Apk-Creator
-  # You may pin to the exact commit or the version.
-  # uses: wildspider57389928/Buildozer-Kivy-APK_Creator@08e04fd25fa70c8468f00c99cb3a52feda0ef928
-  uses: wildspider57389928/Buildozer-Kivy-APK_Creator@4.0.0
-  with:
-    # Building Directory
-    project-dir: # default is .
-    # Buildozer command
-    command: # default is buildozer android debug
-          
+name: Android Build
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y git zip unzip autoconf autogen libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev openjdk-17-jdk
+          pip install --upgrade Cython==0.29.33 buildozer
+
+      - name: Build with Buildozer
+        run: |
+          if [ ! -f buildozer.spec ]; then
+            buildozer init
+            sed -i 's/requirements = python3,kivy/requirements = python3,kivy,libffi/' buildozer.spec
+            sed -i 's/source.include_exts = py,png,jpg,kv,atlas/source.include_exts = py,png,jpg,kv,atlas,json/' buildozer.spec
+          fi
+          buildozer -v android debug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: KundenManager-APK
+          path: bin/*.apk
